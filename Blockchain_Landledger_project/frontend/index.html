@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlockLand Registry | Secure Land Ownership</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon"><i class="fas fa-mountain"></i></span>
+                    <h1>BlockLand Registry</h1>
+                </div>
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="#" data-page="dashboard" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li><a href="#" data-page="register-land"><i class="fas fa-file-contract"></i> Register Land</a></li>
+                        <li><a href="#" data-page="my-lands"><i class="fas fa-landmark"></i> My Lands</a></li>
+                        <li><a href="#" data-page="verification"><i class="fas fa-shield-alt"></i> Verification</a></li>
+                        <li><a href="#" data-page="transfer"><i class="fas fa-exchange-alt"></i> Transfer</a></li>
+                        <li><a href="#" data-page="transfer-history"><i class="fas fa-history"></i> Transfer History</a></li>
+                        <li><a href="#" data-page="profile"><i class="fas fa-user"></i> Profile</a></li>
+                        <li><a href="#" data-page="admin" id="admin-nav" style="display:none;"><i class="fas fa-cog"></i> Admin</a></li>
+                    </ul>
+                </nav>
+                <div class="user-info" id="user-info">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Authentication Pages -->
+            <div id="auth-page" class="page active">
+                <div class="auth-container">
+                    <div class="auth-card card">
+                        <div class="auth-tabs">
+                            <div class="auth-tab active" data-tab="login">Login</div>
+                            <div class="auth-tab" data-tab="register">Register</div>
+                        </div>
+                        
+                        <div id="login-form" class="auth-form active">
+                            <h2 class="page-title">Login to Your Account</h2>
+                            <form id="loginForm">
+                                <div class="form-group">
+                                    <label for="login-email">Email Address</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="login-email" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="login-password">Password</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" id="login-password" required>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div id="register-form" class="auth-form">
+                            <h2 class="page-title">Create New Account</h2>
+                            <form id="registerForm">
+                                <div class="form-group">
+                                    <label for="register-name">Full Name</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="register-name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="register-email">Email Address</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="register-email" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="register-password">Password</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" id="register-password" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="register-confirm-password">Confirm Password</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" id="register-confirm-password" required>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Register</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page">
+                <h2 class="page-title"><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                <p class="page-subtitle">Welcome to your BlockLand Registry dashboard. Here you can manage your land properties, track verification status, and view important statistics.</p>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-map-marked-alt"></i></div>
+                        <div class="stat-value" id="lands-count">0</div>
+                        <div class="stat-label">Lands Registered</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stat-value" id="pending-count">0</div>
+                        <div class="stat-label">Pending Verifications</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-value" id="verified-count">0</div>
+                        <div class="stat-label">Verified Lands</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                        <div class="stat-value" id="nft-count">0</div>
+                        <div class="stat-label">NFTs Minted</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-history"></i> Recent Activity</h3>
+                    </div>
+                    <div class="records-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Land ID</th>
+                                    <th>Location</th>
+                                    <th>Area</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-activity">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Register Land Page -->
+            <div id="register-land" class="page">
+                <h2 class="page-title"><i class="fas fa-file-contract"></i> Register New Land</h2>
+                <p class="page-subtitle">Register your land property to create an immutable record on the blockchain. All information will be securely stored and verified.</p>
+                
+                <div class="card">
+                    <form id="landRegistrationForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="land-title">Land Title</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-heading"></i>
+                                    <input type="text" id="land-title" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="land-area">Area (sq. meters)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <input type="number" id="land-area" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="land-address">Address</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <input type="text" id="land-address" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="land-city">City</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-city"></i>
+                                    <input type="text" id="land-city" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="land-state">State/Province</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-globe-americas"></i>
+                                    <input type="text" id="land-state" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="land-country">Country</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-flag"></i>
+                                    <input type="text" id="land-country" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="land-pincode">Postal Code</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-mail-bulk"></i>
+                                    <input type="text" id="land-pincode" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="land-coordinates">GPS Coordinates</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-map-pin"></i>
+                                    <input type="text" id="land-coordinates" placeholder="e.g., 40.7128° N, 74.0060° W">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="land-description">Description</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-file-alt"></i>
+                                <textarea id="land-description" rows="4"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Register Land</button>
+                            <button type="reset" class="btn"><i class="fas fa-undo"></i> Clear Form</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- My Lands Page -->
+            <div id="my-lands" class="page">
+                <h2 class="page-title"><i class="fas fa-landmark"></i> My Land Records</h2>
+                <p class="page-subtitle">View and manage all your registered land properties. Click on any land to view detailed information.</p>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-list"></i> Land Properties</h3>
+                    </div>
+                    <div class="records-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Land ID</th>
+                                    <th>Title</th>
+                                    <th>Location</th>
+                                    <th>Area</th>
+                                    <th>Status</th>
+                                    <th>NFT</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lands-table-body">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Verification Page -->
+            <div id="verification" class="page">
+                <h2 class="page-title"><i class="fas fa-shield-alt"></i> Land Verification</h2>
+                <p class="page-subtitle">Complete the verification process to secure your land ownership with blockchain technology.</p>
+                
+                <div class="verification-container">
+                    <div class="verification-steps">
+                        <div class="step" id="step-1">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Document Verification</h3>
+                                <p>Upload and verify ownership documents with our secure system.</p>
+                                <button class="btn action-btn" onclick="startDocumentVerification()" id="doc-verify-btn"><i class="fas fa-file-upload"></i> Start Verification</button>
+                            </div>
+                        </div>
+                        <div class="step locked" id="step-2">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>E-Notary Authentication</h3>
+                                <p>Digital notary verification of documents for legal compliance.</p>
+                                <button class="btn action-btn" onclick="startENotaryVerification()" id="enotary-btn" disabled><i class="fas fa-stamp"></i> Authenticate</button>
+                            </div>
+                        </div>
+                        <div class="step locked" id="step-3">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Zero-Knowledge Proof Validation</h3>
+                                <p>Privacy-preserving verification of ownership without revealing sensitive data.</p>
+                                <button class="btn action-btn" onclick="startZKPVerification()" id="zkp-btn" disabled><i class="fas fa-user-secret"></i> Generate ZKP</button>
+                            </div>
+                        </div>
+                        <div class="step locked" id="step-4">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h3>NFT Minting</h3>
+                                <p>Create unique NFT representing land ownership on the blockchain.</p>
+                                <button class="btn action-btn" onclick="startNFTMinting()" id="nft-btn" disabled><i class="fas fa-coins"></i> Mint NFT</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="verification-form">
+                        <h3 class="card-title"><i class="fas fa-play-circle"></i> Start Verification Process</h3>
+                        <form id="verificationForm">
+                            <div class="form-group">
+                                <label for="verify-land-id">Select Land to Verify</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    <select id="verify-land-id" required>
+                                        <option value="">-- Select Land --</option>
+                                        <!-- Will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-play"></i> Start Verification</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transfer Ownership Page -->
+            <div id="transfer" class="page">
+                <h2 class="page-title"><i class="fas fa-exchange-alt"></i> Transfer Land Ownership</h2>
+                <p class="page-subtitle">Transfer ownership of your verified land properties to another user securely using blockchain technology.</p>
+                
+                <div class="card">
+                    <form id="transferForm">
+                        <div class="form-group">
+                            <label for="transfer-land-id">Select Land to Transfer</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <select id="transfer-land-id" required>
+                                    <option value="">-- Select Land --</option>
+                                    <!-- Will be populated by JavaScript -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="transfer-recipient">Recipient Email</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="transfer-recipient" placeholder="recipient@example.com" required>
+                            </div>
+                            <small style="color: var(--gray); margin-top: 5px; display: block;">Enter the recipient's email address.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="transfer-amount">Transfer Amount (ETH)</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <input type="number" id="transfer-amount" step="0.001" min="0" placeholder="0.00" required>
+                            </div>
+                            <small style="color: var(--gray); margin-top: 5px; display: block;">Enter the amount in ETH for this land transfer</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="transfer-notes">Transfer Notes (Optional)</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-sticky-note"></i>
+                                <textarea id="transfer-notes" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Initiate Transfer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Transfer History Page -->
+            <div id="transfer-history" class="page">
+                <h2 class="page-title"><i class="fas fa-history"></i> Transfer History</h2>
+                <p class="page-subtitle">View all land transfer transactions, including purchase amounts and parties involved.</p>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-exchange-alt"></i> All Transfers</h3>
+                    </div>
+                    <div class="records-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Land ID</th>
+                                    <th>Land Title</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transfer-history-body">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Page -->
+            <div id="profile" class="page">
+                <h2 class="page-title"><i class="fas fa-user"></i> User Profile</h2>
+                <p class="page-subtitle">View and manage your account details.</p>
+                
+                <div class="profile-container">
+                    <div class="profile-sidebar">
+                        <div class="profile-avatar" id="profile-avatar">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                        <h3 id="profile-name">User Name</h3>
+                        <p id="profile-email">user@example.com</p>
+                        <div style="margin-top: 2rem;">
+                            <button class="btn" onclick="openEditProfileModal()"><i class="fas fa-edit"></i> Edit Profile</button>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-details">
+                        <h3 class="card-title"><i class="fas fa-info-circle"></i> Account Details</h3>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">User ID</div>
+                            <div class="detail-value" id="profile-user-id">-</div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">Full Name</div>
+                            <div class="detail-value" id="profile-full-name">-</div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">Email Address</div>
+                            <div class="detail-value" id="profile-email-address">-</div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">Account Created</div>
+                            <div class="detail-value" id="profile-created">-</div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">Lands Registered</div>
+                            <div class="detail-value" id="profile-lands-count">0</div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">Verified Lands</div>
+                            <div class="detail-value" id="profile-verified-count">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Admin Page -->
+            <div id="admin" class="page">
+                <h2 class="page-title"><i class="fas fa-cog"></i> Admin Panel</h2>
+                <p class="page-subtitle">Manage users, lands, and system settings.</p>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-users"></i> Registered Users</h3>
+                    </div>
+                    <div class="records-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Registration Date</th>
+                                    <th>Lands Count</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-users-table">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-landmark"></i> All Lands</h3>
+                    </div>
+                    <div class="records-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Land ID</th>
+                                    <th>Title</th>
+                                    <th>Owner</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Registered Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-lands-table">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div class="modal" id="land-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Land Details</h3>
+                <button class="modal-close" onclick="closeModal('land-details-modal')">&times;</button>
+            </div>
+            <div class="modal-body" id="land-details-content">
+                <!-- Land details will be populated here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('land-details-modal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="verification-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="verification-modal-title">Verification Process</h3>
+                <button class="modal-close" onclick="closeModal('verification-modal')">&times;</button>
+            </div>
+            <div class="modal-body" id="verification-modal-content">
+                <!-- Verification details will be populated here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('verification-modal')">Close</button>
+                <button class="btn btn-success" id="verification-submit-btn" style="display:none;"><i class="fas fa-check"></i> Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="edit-profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Profile</h3>
+                <button class="modal-close" onclick="closeModal('edit-profile-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm">
+                    <div class="form-group">
+                        <label for="edit-name">Full Name</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="edit-name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-email">Email Address</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="edit-email" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('edit-profile-modal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveProfileChanges()"><i class="fas fa-save"></i> Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2023 BlockLand Registry. All rights reserved.</p>
+                <p>Secure Blockchain-Based Land Ownership System</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
